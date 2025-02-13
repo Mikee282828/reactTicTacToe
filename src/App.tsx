@@ -1,16 +1,18 @@
-import { useState } from 'react'
+import { useState } from "react";
 
-import './App.css'
+import "./App.css";
 
 export default function App() {
-
   return (
     <>
-      <Square/>
+      <Square />
     </>
-  )
+  );
 }
 
 function Square() {
-  return <button className="square">X</button>;
+  return (
+  <button className="square">X</button>
+  <button className="square">X</button>
+  );
 }
