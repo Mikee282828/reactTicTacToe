@@ -33,5 +33,11 @@ function Board() {
 }
 
 function Square({ value }: any) {
-  return <button className="square">{value}</button>;
+
+  function handleClick(){
+    console.log("Clicked: "+value);
+  }
+  
+  return <button className="square" onClick={handleClick}>{value}</button>;
+
 }
