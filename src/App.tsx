@@ -11,7 +11,7 @@ export default function App() {
 }
 
 function Board() {
-  const [board, setBoard] = useState(Array<string>(9));
+  const [board, setBoard] = useState(Array<string>(9)); // simile alle variabile reattive di vue
 
   function handleClick(index: number) {
     const temp = board.slice();
