@@ -23,6 +23,7 @@ function Board() {
     setBoard(temp);
     console.log(temp);  //React schedules the state update and it will 
     console.log(board); //happen after the function completes and the component re-renders.
+    
   }
 
   return (
@@ -65,4 +66,25 @@ function Square({ value, onSquareClick }: any) {
       {value}
     </button>
   );
+}
+
+function calculateWinner(board:Array<string>):(string|null){
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6]
+  ];
+
+  for(let i = 0; i<lines.length; i++){
+    if(board[lines[i][0]] == board[lines[i][1]] && board[lines[i][0]] == board[lines[i][2]]){
+      return board[lines[i][0]];
+    }
+  }
+
+  return null;
 }
