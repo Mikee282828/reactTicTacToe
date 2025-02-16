@@ -15,6 +15,7 @@ function Board() {
   const [xIsNext, setXIsNext] = useState(true);
 
   function handleClick(index: number) {
+    if(board[index]) return;
     const temp = board.slice();
     if(xIsNext)temp[index] = "X";
     else temp[index] = "O";
