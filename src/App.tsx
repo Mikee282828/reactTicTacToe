@@ -15,15 +15,27 @@ function Board() {
   const [xIsNext, setXIsNext] = useState(true);
 
   function handleClick(index: number) {
-    if(board[index]) return;
+    if (board[index] || calculateWinner(board)) {
+      return;
+    }
+
     const temp = board.slice();
-    if(xIsNext)temp[index] = "X";
+    if (xIsNext) temp[index] = "X";
     else temp[index] = "O";
+
     setXIsNext(!xIsNext);
     setBoard(temp);
-    console.log(temp);  //React schedules the state update and it will 
+
+    console.log(temp); //React schedules the state update and it will
     console.log(board); //happen after the function completes and the component re-renders.
-    
+  }
+
+  const winner = calculateWinner(board);
+  let status;
+  if (winner) {
+    status = "The winner is: " + winner;
+  } else {
+    status = "Next player: " + (xIsNext ? "X" : "O");
   }
 
   return (
@@ -40,9 +52,14 @@ function Board() {
        you are calling that function right away—notice the parentheses 
       in handleClick(0)—and that’s why it runs too early. You don’t want to call
        handleClick until the user clicks! */}
-
+      <h4>{status}</h4>
       <div className="board-row">
-        <Square value={board[0]} onSquareClick={function(){handleClick(0)}} />
+        <Square
+          value={board[0]}
+          onSquareClick={function () {
+            handleClick(0);
+          }}
+        />
         <Square value={board[1]} onSquareClick={() => handleClick(1)} />
         <Square value={board[2]} onSquareClick={() => handleClick(2)} />
       </div>
@@ -68,7 +85,7 @@ function Square({ value, onSquareClick }: any) {
   );
 }
 
-function calculateWinner(board:Array<string>):(string|null){
+function calculateWinner(board: Array<string>): string | null {
   const lines = [
     [0, 1, 2],
     [3, 4, 5],
@@ -77,11 +94,14 @@ function calculateWinner(board:Array<string>):(string|null){
     [1, 4, 7],
     [2, 5, 8],
     [0, 4, 8],
-    [2, 4, 6]
+    [2, 4, 6],
   ];
 
-  for(let i = 0; i<lines.length; i++){
-    if(board[lines[i][0]] == board[lines[i][1]] && board[lines[i][0]] == board[lines[i][2]]){
+  for (let i = 0; i < lines.length; i++) {
+    if (
+      board[lines[i][0]] == board[lines[i][1]] &&
+      board[lines[i][0]] == board[lines[i][2]]
+    ) {
       return board[lines[i][0]];
     }
   }
