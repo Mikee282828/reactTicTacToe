@@ -12,20 +12,18 @@ export default function App() {
 
 function Game() {
   const [history, setHistory] = useState([Array(9).fill(null)]);
-  const [xIsNext, setXIsNext] = useState(true);
   const [currentMove, setCurrentMove] = useState(0);
+  const xIsNext = currentMove % 2 === 0;   // removing state
   const currentSquares = history[currentMove];
 
   function handlePlay(nextBoard:any){
     const nextHistory = [...history.slice(0,currentMove+1),nextBoard];
     setHistory(nextHistory);   // ...history is for all history items
     setCurrentMove(nextHistory.length-1);
-    setXIsNext(!xIsNext);
   }
 
   function jumpTo(nextMove:number){
     setCurrentMove(nextMove);
-    setXIsNext(nextMove % 2 == 0);
   }
 
   const moves = history.map((nextBoard,move) => {
