@@ -5,14 +5,34 @@ import "./App.css";
 export default function App() {
   return (
     <>
-      <Board />
+      <Game />
     </>
   );
 }
 
-function Board() {
-  const [board, setBoard] = useState(Array<string>(9)); // simile alle variabile reattive di vue
+function Game() {
+  const [history, setHistory] = useState([Array(9).fill(null)]);
   const [xIsNext, setXIsNext] = useState(true);
+  const currentSquares = history[history.length - 1];
+
+  function handlePlay(nextBoard:any){
+    setHistory([...history,nextBoard]);
+    setXIsNext(!xIsNext);
+  }
+
+  return (
+    <div className="game">
+      <div className="game-board">
+        <Board xIsNext={xIsNext} board={currentSquares} onPlay={handlePlay} />
+      </div>
+      <div className="game-info">
+        <ol>{/*TODO*/}</ol>
+      </div>
+    </div>
+  );
+}
+
+function Board({xIsNext,board,onPlay}:any) {
 
   function handleClick(index: number) {
     if (board[index] || calculateWinner(board)) {
@@ -23,8 +43,7 @@ function Board() {
     if (xIsNext) temp[index] = "X";
     else temp[index] = "O";
 
-    setXIsNext(!xIsNext);
-    setBoard(temp);
+    onPlay(temp);
 
     console.log(temp); //React schedules the state update and it will
     console.log(board); //happen after the function completes and the component re-renders.
