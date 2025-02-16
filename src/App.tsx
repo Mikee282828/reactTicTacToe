@@ -12,10 +12,13 @@ export default function App() {
 
 function Board() {
   const [board, setBoard] = useState(Array<string>(9)); // simile alle variabile reattive di vue
+  const [xIsNext, setXIsNext] = useState(true);
 
   function handleClick(index: number) {
     const temp = board.slice();
-    temp[index] = "X";
+    if(xIsNext)temp[index] = "X";
+    else temp[index] = "O";
+    setXIsNext(!xIsNext);
     setBoard(temp);
     console.log(temp);  //React schedules the state update and it will 
     console.log(board); //happen after the function completes and the component re-renders.
