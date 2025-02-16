@@ -29,6 +29,7 @@ function Game() {
   const moves = history.map((nextBoard,move) => {
     let description = move>0 ? "Go to move #"+move : "Go to game start";
 
+    if(move !== currentMove)
     return(
       <li key={move}>
         <button onClick={()=>{jumpTo(move)}}>
@@ -36,6 +37,14 @@ function Game() {
         </button>
       </li>
     );
+    else
+    return(
+      <li key={move}>
+      <button onClick={()=>{jumpTo(move)}}>
+        You are at move #{move}
+      </button>
+    </li>
+  );
 
   });
 
