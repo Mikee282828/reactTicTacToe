@@ -16,36 +16,43 @@ function Game() {
   const xIsNext = currentMove % 2 === 0;   // removing state
   const currentSquares = history[currentMove];
 
-  function handlePlay(nextBoard:any){
-    const nextHistory = [...history.slice(0,currentMove+1),nextBoard];
-    setHistory(nextHistory);   // ...history is for all history items
-    setCurrentMove(nextHistory.length-1);
+  function handlePlay(nextBoard: any) {
+    const nextHistory = [...history.slice(0, currentMove + 1), nextBoard];
+    setHistory(nextHistory); // ...history is for all history items
+    setCurrentMove(nextHistory.length - 1);
   }
 
-  function jumpTo(nextMove:number){
+  function jumpTo(nextMove: number) {
     setCurrentMove(nextMove);
   }
 
-  const moves = history.map((nextBoard,move) => {
-    let description = move>0 ? "Go to move #"+move : "Go to game start";
+  const moves = history.map((nextBoard, move) => {
+    let description = move > 0 ? "Go to move #" + move : "Go to game start";
 
-    if(move !== currentMove)
-    return(
-      <li key={move}>
-        <button onClick={()=>{jumpTo(move)}}>
-          {description}
-        </button>
-      </li>
-    );
+    if (move !== currentMove)
+      return (
+        <li key={move}>
+          <button
+            onClick={() => {
+              jumpTo(move);
+            }}
+          >
+            {description}
+          </button>
+        </li>
+      );
     else
-    return(
-      <li key={move}>
-      <button onClick={()=>{jumpTo(move)}}>
-        You are at move #{move}
-      </button>
-    </li>
-  );
-
+      return (
+        <li key={move}>
+          <button
+            onClick={() => {
+              jumpTo(move);
+            }}
+          >
+            You are at move #{move}
+          </button>
+        </li>
+      );
   });
 
   return (
@@ -60,8 +67,7 @@ function Game() {
   );
 }
 
-function Board({xIsNext,board,onPlay}:any) {
-
+function Board({ xIsNext, board, onPlay }: any) {
   function handleClick(index: number) {
     if (board[index] || calculateWinner(board)) {
       return;
@@ -73,8 +79,8 @@ function Board({xIsNext,board,onPlay}:any) {
 
     onPlay(temp);
 
-    console.log(temp); //React schedules the state update and it will
-    console.log(board); //happen after the function completes and the component re-renders.
+    //console.log(temp); //React schedules the state update and it will
+    //console.log(board); //happen after the function completes and the component re-renders.
   }
 
   const winner = calculateWinner(board);
@@ -85,6 +91,15 @@ function Board({xIsNext,board,onPlay}:any) {
     status = "Next player: " + (xIsNext ? "X" : "O");
   }
 
+  let render=[];
+  for(let i = 0; i<3; i++){
+    let inner =[];
+    for(let j = 0; j<3; j++){
+      inner.push(<Square key={i*3+j} value={board[i*3+j]} onSquareClick={() => handleClick(i*3+j)} />);
+    }
+    render.push(<div className="board-row" key={i}>{inner}</div>);
+  }
+  
   return (
     <>
       {/* !!!!!! WHY YOU SHOULDN'T USE PROP={FUNCTION(SOMETHING)} */}
@@ -99,27 +114,8 @@ function Board({xIsNext,board,onPlay}:any) {
        you are calling that function right away—notice the parentheses 
       in handleClick(0)—and that’s why it runs too early. You don’t want to call
        handleClick until the user clicks! */}
-      <h4>{status}</h4>
-      <div className="board-row">
-        <Square
-          value={board[0]}
-          onSquareClick={function () {
-            handleClick(0);
-          }}
-        />
-        <Square value={board[1]} onSquareClick={() => handleClick(1)} />
-        <Square value={board[2]} onSquareClick={() => handleClick(2)} />
-      </div>
-      <div className="board-row">
-        <Square value={board[3]} onSquareClick={() => handleClick(3)} />
-        <Square value={board[4]} onSquareClick={() => handleClick(4)} />
-        <Square value={board[5]} onSquareClick={() => handleClick(5)} />
-      </div>
-      <div className="board-row">
-        <Square value={board[6]} onSquareClick={() => handleClick(6)} />
-        <Square value={board[7]} onSquareClick={() => handleClick(7)} />
-        <Square value={board[8]} onSquareClick={() => handleClick(8)} />
-      </div>
+      <h1>{status}</h1>
+      {render}
     </>
   );
 }
